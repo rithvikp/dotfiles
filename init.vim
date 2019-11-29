@@ -3,16 +3,8 @@
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
 
-"Plug 'ctrlpvim/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
 
-" Plugins for JS/React development.
-" Plug 'peitalin/vim-jsx-typescript'
-" Plug 'leafgarland/typescript-vim'
-
-" Plugins for flutter development.
-" Plug 'dart-lang/dart-vim-plugin'
- 
 " Autocomplete plugin
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' }
 
@@ -35,35 +27,31 @@ Plug 'mhinz/vim-signify'
 call plug#end()
 " -- END PLUGINS --
 
-" Make Ctrl P search Files, Buffers and MRU files at the same time.
-"let g:ctrlp_cmd = 'CtrlPMixed'
-"let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-"if executable('rg')
-    "set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-    "let g:ctrlp_user_command = 'rg %s --files --hidden --color=never --glob ""'  
-"endif
-"let g:ctrlp_use_caching = 0
+" Searching
+if executable('rg')
+    " Set ripgrep functionality in fzf: default colors are changed and ripgrep is prevented from
+    " matching file names (--delimiter...)
+    command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:123,hl+:222 --delimiter : --nth 4..'}, 0)
 
-" Set Ripgrep functionality in fzf: default colors are changed and ripgrep is prevented from
-" matching file names (--delimiter...)
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:123,hl+:222 --delimiter : --nth 4..'}, 0)
-
+    " Set ripgrep as the executable for :grep
+    set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+endif
 
 " Autocomplete setup
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 let g:ycm_semantic_triggers = { 'python,go,javascript,typescript,c,java,cpp,rust': [ 're!\w{2}' ]}
 set pumheight=15                        " Set max autocomplete window size
 let g:ycm_global_ycm_extra_conf = '$HOME/.config/nvim/.ycm_extra_conf.py'
 
 " https://stackoverflow.com/a/26022965/6708503
-autocmd CompleteDone * pclose               " Automatically close autocomplete window
+if has('autocmd')
+    autocmd CompleteDone * pclose       " Automatically close autocomplete window
+endif
 
 " Don't show preview window
 set completeopt-=preview
 let g:ycm_add_preview_to_completeopt = 0
-
 " Ensure omnifunc is active
 set omnifunc=syntaxcomplete#Complete
 
@@ -74,21 +62,16 @@ let g:signify_vcs_list=['git']
 " Language/filetype shortcuts and settings
 " Go
 let g:go_fmt_command = "gopls"
-autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab   " Use tabs for Go files
 let g:go_fmt_fail_silently = 1
 
-" js/ts/tsx/jsx
-autocmd BufNewFile,BufRead *.tsx,*.jsx,*.js set filetype=typescript.tsx
-autocmd BufEnter *.tsx set filetype=typescript
-
-" Dart
-autocmd FileType dart setlocal shiftwidth=2 tabstop=2 softtabstop=2 " Use tab width of 2
-
-" Yaml
-autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
-
-" CSS
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+" Language specific autoformatting
+if has('autocmd')
+    autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab   " Use tabs for Go files
+    autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+    autocmd FileType dart setlocal shiftwidth=2 tabstop=2 softtabstop=2 " Use tab width of 2
+    autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+endif
 
 " File exploring
 let g:NERDTreeQuitOnOpen = 1
