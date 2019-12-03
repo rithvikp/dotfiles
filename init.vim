@@ -27,6 +27,12 @@ Plug 'mhinz/vim-signify'
 call plug#end()
 " -- END PLUGINS --
 
+" Status bar
+let g:airline_powerline_fonts = 1 
+set laststatus=2
+set ruler
+set wildmenu                            " Enable command autocomplete window
+
 " Searching
 if executable('rg')
     " Set ripgrep functionality in fzf: default colors are changed and ripgrep is prevented from
@@ -61,7 +67,7 @@ let g:signify_vcs_list=['git']
 
 " Language/filetype shortcuts and settings
 " Go
-let g:go_fmt_command = "gopls"
+let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 
 " Language specific autoformatting
@@ -126,11 +132,6 @@ set incsearch			            	" Enable incremental searching
 set hlsearch			            	" Highlight searches
 set ignorecase
 set smartcase			            	" Ignore case if all lowercase
-
-" Setup bottom bar
-set laststatus=2
-set ruler
-set wildmenu                            " Enable command autocomplete window
 
 " Setup line viewing in pages
 if !&scrolloff
