@@ -5,6 +5,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'vim-airline/vim-airline'
 
+" Syntax highlighting
+Plug 'HerringtonDarkholme/yats.vim'
+
 " Autocomplete plugin
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' }
 
@@ -49,6 +52,10 @@ endif
 let g:ycm_semantic_triggers = { 'python,go,javascript,typescript,c,java,cpp,rust': [ 're!\w{2}' ]}
 set pumheight=15                        " Set max autocomplete window size
 let g:ycm_global_ycm_extra_conf = '$HOME/.config/nvim/.ycm_extra_conf.py'
+highlight YcmErrorLine guibg=#8a0026  
+highlight YcmErrorSection guibg=#8a0026  
+highlight YcmWarningLine guibg=#8a0026
+highlight YcmWarningSection guibg=#8a0026
 
 " https://stackoverflow.com/a/26022965/6708503
 if has('autocmd')
@@ -96,6 +103,7 @@ nmap <leader>q :q
 nmap <leader>n :NERDTreeToggle %<Enter>
 nmap <leader>r :reg<Enter>
 nmap <leader>g :Rg<Enter>
+command! Gd YcmCompleter GoToDefinition
 
 if has('autocmd')
   filetype plugin indent on             " Enable filetype specific features
