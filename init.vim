@@ -4,12 +4,17 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'morhetz/gruvbox'
 
 " Syntax highlighting
 Plug 'HerringtonDarkholme/yats.vim'
 
 " Autocomplete plugin
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' }
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --go-completer --ts-completer --java-completer --clangd-completer --rust-completer' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'Shougo/deoplete.nvim'
+"Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 
 " Plugins for Go
 Plug 'fatih/vim-go'
@@ -30,8 +35,14 @@ Plug 'mhinz/vim-signify'
 call plug#end()
 " -- END PLUGINS --
 
+" Colors
+colorscheme gruvbox                     " Set colorscheme
+set background=dark
+"highlight Pmenu ctermbg=darkgray guibg=darkgray
+"
 " Status bar
 let g:airline_powerline_fonts = 1 
+let g:airline_theme = 'dark'
 set laststatus=2
 set ruler
 set wildmenu                            " Enable command autocomplete window
@@ -49,13 +60,16 @@ if executable('rg')
 endif
 
 " Autocomplete setup
-let g:ycm_semantic_triggers = { 'python,go,javascript,typescript,c,java,cpp,rust': [ 're!\w{2}' ]}
-set pumheight=15                        " Set max autocomplete window size
-let g:ycm_global_ycm_extra_conf = '$HOME/.config/nvim/.ycm_extra_conf.py'
-highlight YcmErrorLine guibg=#8a0026  
-highlight YcmErrorSection guibg=#8a0026  
-highlight YcmWarningLine guibg=#8a0026
-highlight YcmWarningSection guibg=#8a0026
+"let g:ycm_semantic_triggers = { 'python,go,javascript,typescript,c,java,cpp,rust': [ 're!\w{2}' ]}
+"let g:ycm_global_ycm_extra_conf = '$HOME/.config/nvim/.ycm_extra_conf.py'
+"let g:ycm_add_preview_to_completeopt = 0
+"let g:ycm_auto_trigger = 1
+"highlight YcmErrorLine guibg=#8a0026  
+"highlight YcmErrorSection guibg=#8a0026  
+"highlight YcmWarningLine guibg=#8a0026
+"highlight YcmWarningSection guibg=#8a0026
+"let g:deoplete#enable_at_startup = 1
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " https://stackoverflow.com/a/26022965/6708503
 if has('autocmd')
@@ -64,9 +78,9 @@ endif
 
 " Don't show preview window
 set completeopt-=preview
-let g:ycm_add_preview_to_completeopt = 0
 " Ensure omnifunc is active
 set omnifunc=syntaxcomplete#Complete
+set pumheight=15                        " Set max autocomplete window size
 
 " VCS diff setup
 set updatetime=100
@@ -103,7 +117,6 @@ nmap <leader>q :q
 nmap <leader>n :NERDTreeToggle %<Enter>
 nmap <leader>r :reg<Enter>
 nmap <leader>g :Rg<Enter>
-command! Gd YcmCompleter GoToDefinition
 
 if has('autocmd')
   filetype plugin indent on             " Enable filetype specific features
@@ -113,8 +126,6 @@ endif
 if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
-
-colorscheme desert                      " Set colorscheme
 
 set shiftround                          " Line wrapping
 set showmatch	            			" Show matching parentheses
