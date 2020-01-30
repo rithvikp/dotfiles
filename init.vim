@@ -38,6 +38,12 @@ call plug#end()
 " Colors
 colorscheme gruvbox                     " Set colorscheme
 set background=dark
+"if strftime("%H") < 18 && strftime("%H") > 7
+  "set background=light
+"else
+  "set background=dark
+"endif
+
 "highlight Pmenu ctermbg=darkgray guibg=darkgray
 "
 " Status bar
@@ -46,6 +52,7 @@ let g:airline_theme = 'dark'
 set laststatus=2
 set ruler
 set wildmenu                            " Enable command autocomplete window
+let g:airline_detect_spell=0
 
 " Searching
 if executable('rg')
@@ -67,9 +74,19 @@ endif
 "highlight YcmErrorLine guibg=#8a0026  
 "highlight YcmErrorSection guibg=#8a0026  
 "highlight YcmWarningLine guibg=#8a0026
-"highlight YcmWarningSection guibg=#8a0026
+"highligt YcmWarningSection guibg=#8a0026
 "let g:deoplete#enable_at_startup = 1
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+set spell
 
 " https://stackoverflow.com/a/26022965/6708503
 if has('autocmd')
@@ -95,6 +112,7 @@ let g:go_fmt_fail_silently = 1
 if has('autocmd')
     autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab   " Use tabs for Go files
     autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+    autocmd FileType typescript setlocal shiftwidth=2 tabstop=2 softtabstop=2       " Use 2 spaces for typescript files
     autocmd FileType dart setlocal shiftwidth=2 tabstop=2 softtabstop=2 " Use tab width of 2
     autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
