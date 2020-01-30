@@ -1,4 +1,4 @@
-" -- SET UP PLUGINS --
+" ----- SET UP PLUGINS -----
 " Specify a directory for plugins
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.local/share/nvim/plugged')
@@ -11,10 +11,7 @@ Plug 'morhetz/gruvbox'
 Plug 'HerringtonDarkholme/yats.vim'
 
 " Autocomplete plugin
-"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --go-completer --ts-completer --java-completer --clangd-completer --rust-completer' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-"Plug 'Shougo/deoplete.nvim'
-"Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 
 " Plugins for Go
 Plug 'fatih/vim-go'
@@ -33,75 +30,24 @@ Plug 'mhinz/vim-signify'
 
 " Initialize plugin system
 call plug#end()
-" -- END PLUGINS --
+" ----- END PLUGINS ------
 
-" Colors
-colorscheme gruvbox                     " Set colorscheme
-set background=dark
-"if strftime("%H") < 18 && strftime("%H") > 7
-  "set background=light
-"else
-  "set background=dark
-"endif
-
-"highlight Pmenu ctermbg=darkgray guibg=darkgray
-"
-" Status bar
-let g:airline_powerline_fonts = 1 
-let g:airline_theme = 'dark'
-set laststatus=2
-set ruler
-set wildmenu                            " Enable command autocomplete window
-let g:airline_detect_spell=0
-
-" Searching
-if executable('rg')
-    " Set ripgrep functionality in fzf: default colors are changed and ripgrep is prevented from
-    " matching file names (--delimiter...)
-    command! -bang -nargs=* Rg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:123,hl+:222 --delimiter : --nth 4..'}, 0)
-
-    " Set ripgrep as the executable for :grep
-    set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-endif
-
+" ----- START LANGUAGES -----
 " Autocomplete setup
-"let g:ycm_semantic_triggers = { 'python,go,javascript,typescript,c,java,cpp,rust': [ 're!\w{2}' ]}
-"let g:ycm_global_ycm_extra_conf = '$HOME/.config/nvim/.ycm_extra_conf.py'
-"let g:ycm_add_preview_to_completeopt = 0
-"let g:ycm_auto_trigger = 1
-"highlight YcmErrorLine guibg=#8a0026  
-"highlight YcmErrorSection guibg=#8a0026  
-"highlight YcmWarningLine guibg=#8a0026
-"highligt YcmWarningSection guibg=#8a0026
-"let g:deoplete#enable_at_startup = 1
+" Configure omnifunc to scroll through results on tab and close when completion is chosen
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-set spell
-
 " https://stackoverflow.com/a/26022965/6708503
 if has('autocmd')
-    autocmd CompleteDone * pclose       " Automatically close autocomplete window
+    autocmd CompleteDone * pclose " Automatically close autocomplete window
 endif
 
-" Don't show preview window
-set completeopt-=preview
-" Ensure omnifunc is active
-set omnifunc=syntaxcomplete#Complete
-set pumheight=15                        " Set max autocomplete window size
+set completeopt-=preview " Don't show preview window
+set omnifunc=syntaxcomplete#Complete " Ensure omnifunc is active
+set pumheight=15 " Set max autocomplete window size
 
-" VCS diff setup
-set updatetime=100
-let g:signify_vcs_list=['git']
+set spell
 
 " Language/filetype shortcuts and settings
 " Go
@@ -117,17 +63,11 @@ if has('autocmd')
     autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 endif
+" ----- END LANGUAGES -----
 
-" File exploring
-let g:NERDTreeQuitOnOpen = 1
-let g:NERDTreeAutoDeleteBuffer = 1
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeDirArrows = 1
-
-" Editor configuration with parts inspired by https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim
+" ----- START MAPPINGS -----
 let mapleader = ","
 
-" Mappings
 nmap <leader>. :b#<Enter>
 nnoremap <leader>w :w<Enter>
 nmap <leader>p :Files<Enter>
@@ -136,59 +76,103 @@ nmap <leader>n :NERDTreeToggle %<Enter>
 nmap <leader>r :reg<Enter>
 nmap <leader>g :Rg<Enter>
 
-if has('autocmd')
-  filetype plugin indent on             " Enable filetype specific features
+" Completion/lsp mappings
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+" ----- END MAPPINGS -----
+
+" Editor configuration with parts inspired by https://github.com/tpope/vim-sensible/blob/master/plugin/sensible.vim
+" ----- START SEARCHING -----
+" Single file search
+set incsearch " Enable incremental searching
+set hlsearch " Highlight searches
+set ignorecase
+set smartcase " Ignore case if all lowercase
+runtime! macros/matchit.vim 	    	" % matches more than just single characters
+
+" FZF
+if executable('rg')
+    " Set ripgrep functionality in fzf: default colors are changed and ripgrep is prevented from
+    " matching file names (--delimiter...)
+    command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1, { 'options': '--color hl:123,hl+:222 --delimiter : --nth 4..'}, 0)
+
+    " Set ripgrep as the executable for :grep
+    set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 endif
+" ----- END SEARCHING -----
+
+" ----- START MISCELLANEOUS -----
+" VCS diff setup
+set updatetime=100
+let g:signify_vcs_list=['git']
+
+" File exploring
+let g:NERDTreeQuitOnOpen = 1
+let g:NERDTreeAutoDeleteBuffer = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeDirArrows = 1
+" ----- END MISCELLANEOUS -----
+
+" ----- START APPEARANCE -----
+" Colors
+colorscheme gruvbox " Set colorscheme
+set background=dark
+hi MatchParen cterm=none ctermbg=yellow ctermfg=blue " Change matching brace color
+
+" Status bar
+let g:airline_powerline_fonts = 1 
+let g:airline_theme = 'dark'
+set laststatus=2
+set ruler
+set wildmenu " Enable command autocompletion
+let g:airline_detect_spell=0
 
 " Syntax highlighting
+if has('autocmd')
+  filetype plugin indent on " Enable filetype specific features
+endif
 if has('syntax') && !exists('g:syntax_on')
   syntax enable
 endif
 
-set shiftround                          " Line wrapping
-set showmatch	            			" Show matching parentheses
+set shiftround " Line wrapping
+set showmatch " Show matching parentheses
 set complete-=i
 
+" Disable line wrapping and configure overflow markers
+set nowrap
+set display+=lastline
+
+if !&scrolloff
+  set scrolloff=1 " One line top and bottom buffer area
+endif
+set lazyredraw " Speed up viewing large files
+
+set noerrorbells visualbell t_vb= " Remove beeping
+" ----- END APPEARANCE -----
+
+" ----- START EDITING -----
 " Indentation and whitespace
-set backspace=indent,eol,start 	    	" Ensure backspace always works
+set backspace=indent,eol,start " Ensure backspace always works
 set smarttab
 set autoindent
 set copyindent
-set expandtab			            	" Use spaces
-set tabstop=4			            	" Default of 4 spaces
-set shiftwidth=4                        " Default of 4 spaces
+set expandtab " Use spaces
+set tabstop=4 " Default of 4 spaces
+set shiftwidth=4 " Default of 4 spaces
 set smartindent
 
-set cursorline			            	" Line under cursor
-set number			                	" Line numbers
-set textwidth=100                       " Set wrapping length
+set cursorline " Line under cursor
+set number " Line numbers
+set textwidth=100 " Set wrapping length
 
-set nrformats-=octal 	        		" Remove octal number incrementing
-
-set incsearch			            	" Enable incremental searching
-set hlsearch			            	" Highlight searches
-set ignorecase
-set smartcase			            	" Ignore case if all lowercase
-
-" Setup line viewing in pages
-if !&scrolloff
-  set scrolloff=1
-endif
-if !&sidescrolloff
-  set sidescrolloff=5
-endif
-set display+=lastline
-set lazyredraw                          " Speed up viewing large files
-
-set encoding=utf-8
-
-set noerrorbells visualbell t_vb=   	" Remove beeping
-
-if &listchars ==# 'eol:$'
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-endif
-
-set autoread			            	" Auto update files
+set nrformats-=octal " Remove octal number incrementing
 
 " History storage
 set history=1000
@@ -197,12 +181,6 @@ set undolevels=1000
 set undofile
 set noswapfile
 
-" Fonts and Colors
-if &t_Co == 8 && $TERM !~# '^linux\|^Eterm'
-  set t_Co=16
-endif
-
-" Change matching brace color
-hi MatchParen cterm=none ctermbg=yellow ctermfg=blue
-
-runtime! macros/matchit.vim 	    	" % matches more than just single characters
+set encoding=utf-8
+set autoread " Auto update files
+" ----- END EDITING -----
