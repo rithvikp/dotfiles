@@ -54,6 +54,9 @@ set spell
 let g:go_fmt_command = "goimports"
 let g:go_fmt_fail_silently = 1
 
+" Java
+autocmd FileType java let b:coc_root_patterns = ['.git', 'Makefile']
+
 " Language specific autoformatting
 if has('autocmd')
     autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab   " Use tabs for Go files
