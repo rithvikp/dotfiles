@@ -16,3 +16,5 @@ coc-settings.json
 - Use the `:CocInstall <package name>` command to install autocompletion for different languages/file
   types. [Here](https://github.com/neoclide/coc.nvim/wiki/Install-coc.nvim) is more information
   about that.
+- Move coc-settings.json to the same location as init.vim, updating necessary paths and adding or
+  removing fields as necessary (more instructions are [here](https://github.com/neoclide/coc.nvim/wiki/Using-the-configuration-file)).
