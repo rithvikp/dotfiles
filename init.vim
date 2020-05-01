@@ -73,11 +73,11 @@ let mapleader = ","
 
 nmap <leader>. :b#<Enter>
 nnoremap <leader>w :w<Enter>
-nmap <leader>p :Files<Enter>
-nmap <leader>q :q
 nmap <leader>n :NERDTreeToggle %<Enter>
 nmap <leader>r :reg<Enter>
+nmap <leader>p :Files<Enter>
 nmap <leader>g :Rg<Enter>
+nmap <leader>b :Buffers<Enter>
 
 " Completion/lsp mappings
 nmap <silent> gd <Plug>(coc-definition)
@@ -149,7 +149,7 @@ set showmatch " Show matching parentheses
 set complete-=i
 
 " Disable line wrapping and configure overflow markers
-set nowrap
+set wrap
 set display+=lastline
 
 if !&scrolloff
