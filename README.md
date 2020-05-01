@@ -7,6 +7,7 @@ coc-settings.json
 ### Install Neovim
 - Install [neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 - Copy init.vim to ~/.config/nvim/init.vim
+- Install fzf (`brew install fzf`) and optionally ripgrep (`brew install ripgrep`)
 - Install python 3 along with the [pynvim](https://github.com/neovim/pynvim)
 - Install [vim-plug](https://github.com/junegunn/vim-plug)
 - Run `:PlugInstall` in neovim
