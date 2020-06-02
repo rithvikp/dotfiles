@@ -61,7 +61,9 @@ autocmd FileType java let b:coc_root_patterns = ['.git', 'Makefile']
 if has('autocmd')
     autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab   " Use tabs for Go files
     autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+    autocmd FileType typescript.tsx setlocal shiftwidth=2 tabstop=2 softtabstop=2   " Use 2 spaces for tsx files
     autocmd FileType typescript setlocal shiftwidth=2 tabstop=2 softtabstop=2       " Use 2 spaces for typescript files
+    autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2       " Use 2 spaces for javascript files
     autocmd FileType dart setlocal shiftwidth=2 tabstop=2 softtabstop=2 " Use tab width of 2
     autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
@@ -75,7 +77,7 @@ nmap <leader>. :b#<Enter>
 nnoremap <leader>w :w<Enter>
 nmap <leader>n :NERDTreeToggle %<Enter>
 nmap <leader>r :reg<Enter>
-nmap <leader>p :Files<Enter>
+nmap <leader>f :Files<Enter>
 nmap <leader>g :Rg<Enter>
 nmap <leader>b :Buffers<Enter>
 
@@ -83,6 +85,7 @@ nmap <leader>b :Buffers<Enter>
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gh <Plug>(coc-action)
 
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
