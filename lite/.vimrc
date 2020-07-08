@@ -12,7 +12,7 @@ if has('autocmd')
     autocmd FileType typescript.tsx setlocal shiftwidth=2 tabstop=2 softtabstop=2   " Use 2 spaces for tsx files
     autocmd FileType typescript setlocal shiftwidth=2 tabstop=2 softtabstop=2       " Use 2 spaces for typescript files
     autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2       " Use 2 spaces for javascript files
-    autcmd FileType dart setlocal shiftwidth=2 tabstop=2 softtabstop=2 " Use tab width of 2
+    autocmd FileType dart setlocal shiftwidth=2 tabstop=2 softtabstop=2 " Use tab width of 2
     autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 endif
