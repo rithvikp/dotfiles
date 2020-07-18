@@ -91,7 +91,6 @@ set nrformats-=octal " Remove octal number incrementing
 set history=1000
 set tabpagemax=50
 set undolevels=1000
-set undofile
 set noswapfile
 
 set encoding=utf-8
