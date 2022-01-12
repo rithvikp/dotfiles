@@ -1,3 +1,4 @@
+
 " ----- SET UP PLUGINS -----
 " Specify a directory for plugins
 " - Avoid using standard Vim directory names like 'plugin'
@@ -34,9 +35,13 @@ call plug#end()
 
 " ----- START LANGUAGES -----
 " Autocomplete setup
-" Configure omnifunc to scroll through results on tab and close when completion is chosen
+" Configure omnifunc to scroll through results on arrow keys and close when completion is chosen.
+" This is probably an option that should be customized by the individual user.
+inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 " https://stackoverflow.com/a/26022965/6708503
 if has('autocmd')
@@ -49,6 +54,10 @@ set pumheight=15 " Set max autocomplete window size
 
 set spell
 
+"let g:ale_fix_on_save = 1
+"let g:ale_completion_enabled = 0
+"let g:ale_fixers = {'typescript': ['prettier', 'eslint'], 'javascript': ['eslint'], 'go': ['goimports', 'golangci-lint']}
+
 " Language/filetype shortcuts and settings
 " Go
 let g:go_fmt_command = "goimports"
@@ -60,6 +69,10 @@ autocmd FileType java let b:coc_root_patterns = ['.git', 'Makefile']
 " Language specific autoformatting
 if has('autocmd')
     autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab   " Use tabs for Go files
+    autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab   " Use tabs for Go files
+    autocmd FileType cpp setlocal shiftwidth=2 tabstop=2 softtabstop=2   " Use 2 spaces for cpp files
+    autocmd FileType c setlocal shiftwidth=2 tabstop=2 softtabstop=2   " Use 2 spaces for c files
+    autocmd FileType h setlocal shiftwidth=2 tabstop=2 softtabstop=2   " Use 2 spaces for h files
     autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
     autocmd FileType typescript.tsx setlocal shiftwidth=2 tabstop=2 softtabstop=2   " Use 2 spaces for tsx files
     autocmd FileType typescript setlocal shiftwidth=2 tabstop=2 softtabstop=2       " Use 2 spaces for typescript files
@@ -79,6 +92,7 @@ nmap <leader>n :NERDTreeToggle %<Enter>
 nmap <leader>r :reg<Enter>
 nmap <leader>f :Files<Enter>
 nmap <leader>g :Rg<Enter>
+nmap <leader>h :History<Enter>
 nmap <leader>b :Buffers<Enter>
 
 " Completion/lsp mappings
@@ -111,6 +125,9 @@ if executable('rg')
     " Set ripgrep as the executable for :grep
     set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 endif
+"let g:fzf_preview_window = ['down:40%:hidden', 'ctrl-/']
+let g:fzf_layout = { 'down': '40%' }
+
 " ----- END SEARCHING -----
 
 " ----- START MISCELLANEOUS -----
@@ -174,7 +191,7 @@ set tabstop=4 " Default of 4 spaces
 set shiftwidth=4 " Default of 4 spaces
 set smartindent
 
-set cursorline " Line under cursor
+"set cursorline " Line under cursor - disabled for performance reasons
 set number " Line numbers
 set textwidth=100 " Set wrapping length
 
