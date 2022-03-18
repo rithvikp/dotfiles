@@ -1,4 +1,3 @@
-
 " ----- SET UP PLUGINS -----
 " Specify a directory for plugins
 " - Avoid using standard Vim directory names like 'plugin'
@@ -13,9 +12,6 @@ Plug 'HerringtonDarkholme/yats.vim'
 
 " Autocomplete plugin
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" Plugins for Go
-Plug 'fatih/vim-go'
 
 " File explorer plugins
 Plug 'scrooloose/nerdtree'
@@ -42,11 +38,19 @@ inoremap <expr> <Up> pumvisible() ? "\<C-p>" : "\<Up>"
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 " https://stackoverflow.com/a/26022965/6708503
-if has('autocmd')
-    autocmd CompleteDone * pclose " Automatically close autocomplete window
-endif
+inoremap <silent><expr> <Enter>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<Enter>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<Tab>'
 
 set completeopt-=preview " Don't show preview window
 set omnifunc=syntaxcomplete#Complete " Ensure omnifunc is active
@@ -54,21 +58,17 @@ set pumheight=15 " Set max autocomplete window size
 
 set spell
 
-"let g:ale_fix_on_save = 1
-"let g:ale_completion_enabled = 0
-"let g:ale_fixers = {'typescript': ['prettier', 'eslint'], 'javascript': ['eslint'], 'go': ['goimports', 'golangci-lint']}
-
 " Language/filetype shortcuts and settings
+command! -nargs=0 OR :silent call CocAction('runCommand', 'editor.action.organizeImport')
+
 " Go
-let g:go_fmt_command = "goimports"
-let g:go_fmt_fail_silently = 1
+autocmd BufWritePre *.go :OR
 
 " Java
 autocmd FileType java let b:coc_root_patterns = ['.git', 'Makefile']
 
 " Language specific autoformatting
 if has('autocmd')
-    autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab   " Use tabs for Go files
     autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab   " Use tabs for Go files
     autocmd FileType cpp setlocal shiftwidth=2 tabstop=2 softtabstop=2   " Use 2 spaces for cpp files
     autocmd FileType c setlocal shiftwidth=2 tabstop=2 softtabstop=2   " Use 2 spaces for c files
@@ -79,6 +79,7 @@ if has('autocmd')
     autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 softtabstop=2       " Use 2 spaces for javascript files
     autocmd FileType dart setlocal shiftwidth=2 tabstop=2 softtabstop=2 " Use tab width of 2
     autocmd FileType yaml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+    autocmd FileType sql setlocal shiftwidth=2 tabstop=2 softtabstop=2
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 endif
 " ----- END LANGUAGES -----

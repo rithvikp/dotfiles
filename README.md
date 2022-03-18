@@ -13,8 +13,8 @@ coc-settings.json
 - Run `:PlugInstall` in neovim
 
 ### Setup Autocomplete
-- Install Node.js
+- Install Node.js.
 - Use the `:CocInstall <package name>` command to install autocompletion for different languages/file
   types. [Here](https://github.com/neoclide/coc.nvim/wiki/Install-coc.nvim) is more information
-  about that.
+  about that. Make sure to install `coc-snippets` as well.
 - More instructions for configuring coc.nvim are [here](https://github.com/neoclide/coc.nvim/wiki/Using-the-configuration-file)).
