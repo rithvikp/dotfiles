@@ -39,18 +39,18 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " https://stackoverflow.com/a/26022965/6708503
-inoremap <silent><expr> <Enter>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-      \ <SID>check_back_space() ? "\<Enter>" :
-      \ coc#refresh()
+"inoremap <silent><expr> <Enter>
+      "\ pumvisible() ? coc#_select_confirm() :
+      "\ coc#expandableOrJumpable() ? \"\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      "\ <SID>check_back_space() ? \"\<Enter>" :
+      "\ coc#refresh()
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+"function! s:check_back_space() abort
+  "let col = col('.') - 1
+  "return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
 
-let g:coc_snippet_next = '<Tab>'
+"let g:coc_snippet_next = '<Tab>'
 
 set completeopt-=preview " Don't show preview window
 set omnifunc=syntaxcomplete#Complete " Ensure omnifunc is active
